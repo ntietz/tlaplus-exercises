@@ -1,6 +1,8 @@
 ---------- MODULE quicksort ----------
 
 EXTENDS TLC, Sequences, Integers
+CONSTANTS MinLength, MaxLength, Elements
+
 
 AllSeqs(minLength, maxLength, elements) == UNION {[1..n -> elements] : n \in minLength..maxLength}
 
