@@ -19,8 +19,7 @@ IsSorted(seq) ==
 \A idx \in 1..Len(seq)-1:
         seq[idx] <= seq[idx+1]
 
-(*--fair algorithm quicksort
-
+(* --fair algorithm quicksort
 variables
     \* seq = CHOOSE \in AllSeqs(2, 4, 1..10): s = <<2,3,1>>,
     seq \in AllSeqs(6, 7, 1..7),
