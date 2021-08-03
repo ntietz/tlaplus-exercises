@@ -1,5 +1,14 @@
 ---------- MODULE quicksort ----------
 
+\* Algorithm cribbed from Wikipedia:
+\* https://en.wikipedia.org/wiki/Quicksort#Lomuto_partition_scheme
+\*
+\* There are two differences as implemented here vs. the Wikipedia pseudocode:
+\* 1. TLA+ uses 1-indexing rather than 0-indexing, so our offsets are adjusted for that.
+\* 2. The index value found for the partition in the Wikipedia pseudocode appears to be
+\*    off by one (classic) and points to the element _after_ the pivot. We adjust for this
+\*    by offsetting in the recurse steps.
+
 EXTENDS TLC, Sequences, Integers
 CONSTANTS MinLength, MaxLength, Elements
 
