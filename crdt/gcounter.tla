@@ -2,11 +2,14 @@
 
 EXTENDS TLC, Integers
 
-NodeCount == 3
+NodeCount == 2
 Nodes == 1..NodeCount
-StepLimit == 10
+StepLimit == 6
 
-InitializedCounter == [n \in Nodes |-> 0]
+StartingCounts == 0..10
+InitialCounters == [Nodes -> StartingCounts]
+InitialStates == [Nodes -> InitialCounters]
+ValidInitialStates == {x \in InitialStates : \A n \in Nodes, m \in Nodes: x[n][n] >= x[m][n]}
 
 Max(x, y) == IF x > y THEN x ELSE y
 MaxCounter(xs, ys) == [n \in Nodes |-> Max(xs[n], ys[n])]
@@ -14,7 +17,7 @@ MaxCounter(xs, ys) == [n \in Nodes |-> Max(xs[n], ys[n])]
 (* --algorithm gcounter
 
 variables
-    state = [n \in Nodes |-> InitializedCounter],
+    state \in ValidInitialStates,
     steps = 0;
 
 macro increment(n)
@@ -54,7 +57,7 @@ end process;
 
 end algorithm;
 *)
-\* BEGIN TRANSLATION (chksum(pcal) = "8460205f" /\ chksum(tla) = "749a48fd")
+\* BEGIN TRANSLATION (chksum(pcal) = "8ea9cd72" /\ chksum(tla) = "41c5f8e1")
 VARIABLES state, steps, pc, next
 
 vars == << state, steps, pc, next >>
@@ -62,7 +65,7 @@ vars == << state, steps, pc, next >>
 ProcSet == (1..NodeCount)
 
 Init == (* Global variables *)
-        /\ state = [n \in Nodes |-> InitializedCounter]
+        /\ state \in ValidInitialStates
         /\ steps = 0
         (* Process node *)
         /\ next = [self \in 1..NodeCount |-> 1]
@@ -110,6 +113,8 @@ Termination == <>(\A self \in ProcSet: pc[self] = "Done")
 
 \* END TRANSLATION
 
+OwnCountHighest == \A n \in Nodes, m \in Nodes: state[n][n] >= state[m][n]
 EventuallyConsistent == steps < StepLimit \/ <>[](\A n \in Nodes, m \in Nodes: state[n] = state[m])
+
 
 =====================================
